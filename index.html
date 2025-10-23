@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Event Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-icon, .profile-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200') center/cover;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #667eea;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .service-card-content {
+            padding: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .service-card .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .event-card-content {
+            padding: 1.5rem;
+        }
+
+        .reviews-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer {
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            min-width: 200px;
+            display: none;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            color: #333;
+            display: block;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1rem;
+            color: #667eea;
+        }
+
+        .payment-methods {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .payment-method {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #667eea;
+        }
+
+        .payment-method.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">🎉</div>
+                <span>Smart Event Planner</span>
+            </div>
+            <ul>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="cart-icon" onclick="openCart()">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </li>
+                <li class="profile-icon" onclick="toggleProfileMenu()">
+                    👤
+                    <div class="dropdown-menu" id="profileMenu">
+                        <div id="loggedOutMenu">
+                            <a onclick="openLogin()">Login</a>
+                            <a onclick="openRegister()">Register</a>
+                        </div>
+                        <div id="loggedInMenu" class="hidden">
+                            <div style="padding: 0.5rem 1rem; border-bottom: 1px solid #eee; margin-bottom: 0.5rem;">
+                                <strong id="userEmail"></strong>
+                            </div>
+                            <a onclick="showPaymentStatus()">Payment Status</a>
+                            <a onclick="showReminders()">Reminders</a>
+                            <a onclick="logout()">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Make Your Events Unforgettable</h1>
+        <p>Professional event planning services for every occasion</p>
+    </section>
+
+    <section id="services">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400" alt="Wedding">
+                <div class="service-card-content">
+                    <h3>Wedding</h3>
+                    <p>Create your dream wedding with our comprehensive planning services</p>
+                    <div class="price">Starting from $5,000</div>
+                    <button class="btn" onclick="addToCart('Wedding', 5000)">Book Now</button>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400" alt="Birthday">
+                <div class="service-card-content">
+                    <h3>Birthday Party</h3>
+                    <p>Celebrate your special day with a memorable birthday party</p>
+                    <div class="price">Starting from $800</div>
+                    <button class="btn" onclick="addToCart('Birthday Party', 800)">Book Now</button>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400" alt="Private Party">
+                <div class="service-card-content">
+                    <h3>Private Party</h3>
+                    <p>Host an exclusive private event tailored to your preferences</p>
+                    <div class="price">Starting from $1,200</div>
+                    <button class="btn" onclick="addToCart('Private Party', 1200)">Book Now</button>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400" alt="Corporate Event">
+                <div class="service-card-content">
+                    <h3>Corporate Event</h3>
+                    <p>Professional corporate events that leave a lasting impression</p>
+                    <div class="price">Starting from $3,000</div>
+                    <button class="btn" onclick="addToCart('Corporate Event', 3000)">Book Now</button>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=400" alt="Anniversary">
+                <div class="service-card-content">
+                    <h3>Anniversary</h3>
+                    <p>Celebrate your love story with a romantic anniversary event</p>
+                    <div class="price">Starting from $1,500</div>
+                    <button class="btn" onclick="addToCart('Anniversary', 1500)">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="events">
+        <h2>Past Events</h2>
+        <div class="events-grid">
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=400" alt="Past Wedding">
+                <div class="event-card-content">
+                    <h3>Luxury Wedding at Grand Hotel</h3>
+                    <p>A beautiful destination wedding with 300+ guests</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=400" alt="Birthday">
+                <div class="event-card-content">
+                    <h3>1st Birthday Celebration</h3>
+                    <p>Joyful first birthday party with colorful and playful décor</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400" alt="Golden Birthday">
+                <div class="event-card-content">
+                    <h3>Golden Birthday Celebration</h3>
+                    <p>Spectacular 50th birthday party with themed decorations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews">
+        <h2>Client Reviews</h2>
+        <div class="reviews-container">
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"Absolutely amazing! They made our wedding day perfect. Every detail was handled with care and professionalism."</p>
+                <div class="reviewer">- Sarah & John</div>
+            </div>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"The corporate event was flawless. Our clients were impressed and everything ran smoothly. Highly recommended!"</p>
+                <div class="reviewer">- Tech Corp Inc.</div>
+            </div>
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"My daughter's birthday party was magical! The team went above and beyond to make it special."</p>
+                <div class="reviewer">- Maria Rodriguez</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Get In Touch</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Email Us</h3>
+                    <a href="mailto:info@smarteventplanner.com" style="color: #333; text-decoration: none;">info@smarteventplanner.com</a>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Call Us</h3>
+                    <a href="tel:+19876543210" style="color: #333; text-decoration: none;">+1 (987) 654-3210</a>
+                </div>
+                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">SMS</h3>
+                    <a href="https://wa.me/11234567890" target="_blank" style="color: #333; text-decoration: none;">+1 (123) 456-7890</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Smart Event Planner. All Rights Reserved.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Designed with❤️ for unforgettable events</p>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    Don't have an account? <a href="#" onclick="openRegister(); closeModal('loginModal'); return false;" style="color: #667eea;">Register</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Register</h2>
+                <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
+            </div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="registerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="registerPassword" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" minlength="6" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <p style="text-align: center; margin-top: 1rem;">
+                    Already have an account? <a href="#" onclick="openLogin(); closeModal('registerModal'); return false;" style="color: #667eea;">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Event Details</h2>
+                <button class="close-btn" onclick="closeModal('eventModal')">&times;</button>
+            </div>
+            <form onsubmit="handleEventDetails(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="eventName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="eventEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="eventPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Event Date</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Number of Guests</label>
+                    <input type="number" id="eventGuests" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Special Requirements</label>
+                    <textarea id="eventRequirements" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Cart</h2>
+                <button class="close-btn" onclick="closeModal('cartModal')">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-total" id="cartTotal">Total: $0</div>
+            <button class="btn" onclick="proceedToPayment()" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Payment</h2>
+                <button class="close-btn" onclick="closeModal('paymentModal')">&times;</button>
+            </div>
+            <h3>Select Payment Method</h3>
+            <div class="payment-methods">
+                <div class="payment-method" onclick="selectPayment('credit')">
+                    <h4>💳 Credit Card</h4>
+                    <p>Pay securely with your credit card</p>
+                </div>
+                <div class="payment-method" onclick="selectPayment('debit')">
+                    <h4>💳 Debit Card</h4>
+                    <p>Direct payment from your bank account</p>
+                </div>
+                <div class="payment-method" onclick="selectPayment('upi')">
+                    <h4>📱 UPI</h4>
+                    <p>Quick payment via UPI apps</p>
+                </div>
+                <div class="payment-method" onclick="selectPayment('netbanking')">
+                    <h4>🏦 Net Banking</h4>
+                    <p>Pay through your bank's online portal</p>
+                </div>
+            </div>
+            <div id="paymentForm" class="hidden" style="margin-top: 2rem;">
+                <form onsubmit="processPayment(event)">
+                    <div class="form-group">
+                        <label>Card Number / UPI ID</label>
+                        <input type="text" id="paymentInfo" required>
+                    </div>
+                    <div class="cart-total" id="paymentTotal">Total: $0</div>
+                    <button type="submit" class="btn" style="width: 100%;">Complete Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Status Modal -->
+    <div class="modal" id="statusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Payment Status</h2>
+                <button class="close-btn" onclick="closeModal('statusModal')">&times;</button>
+            </div>
+            <div id="statusContent"></div>
+        </div>
+    </div>
+
+    <!-- Reminders Modal -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Event Reminders</h2>
+                <button class="close-btn" onclick="closeModal('reminderModal')">&times;</button>
+            </div>
+            <div id="reminderContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let currentUser = null;
+        let payments = [];
+        let pendingEvent = null;
+
+        function openLogin() {
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('profileMenu').classList.remove('active');
+        }
+
+        function openRegister() {
+            document.getElementById('registerModal').classList.add('active');
+            document.getElementById('profileMenu').classList.remove('active');
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            try {
+                const response = await fetch('register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Registration successful! Please login.');
+                    closeModal('registerModal');
+                    openLogin();
+                    e.target.reset();
+                } else {
+                    alert('Registration failed: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during registration. Please make sure register.php exists and XAMPP is running.');
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const response = await fetch('login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    
+                    document.getElementById('loggedOutMenu').classList.add('hidden');
+                    document.getElementById('loggedInMenu').classList.remove('hidden');
+                    document.getElementById('userEmail').textContent = data.user.email;
+                    
+                    closeModal('loginModal');
+                    alert('Login successful! Welcome, ' + data.user.name);
+                    e.target.reset();
+                    
+                    await loadUserBookings();
+                } else {
+                    alert('Login failed: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during login. Please make sure login.php exists and XAMPP is running.');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                cart = [];
+                payments = [];
+                
+                document.getElementById('loggedOutMenu').classList.remove('hidden');
+                document.getElementById('loggedInMenu').classList.add('hidden');
+                document.getElementById('userEmail').textContent = '';
+                
+                updateCartCount();
+                document.getElementById('profileMenu').classList.remove('active');
+                
+                alert('Logged out successfully!');
+            }
+        }
+
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('active');
+        }
+
+        function addToCart(service, price) {
+            if (!currentUser) {
+                alert('Please login to book an event!');
+                openLogin();
+                return;
+            }
+            
+            pendingEvent = { service, price };
+            document.getElementById('eventModal').classList.add('active');
+        }
+
+        async function handleEventDetails(e) {
+            e.preventDefault();
+            
+            const eventDetails = {
+                service: pendingEvent.service,
+                price: pendingEvent.price,
+                name: document.getElementById('eventName').value,
+                email: document.getElementById('eventEmail').value,
+                phone: document.getElementById('eventPhone').value,
+                date: document.getElementById('eventDate').value,
+                guests: document.getElementById('eventGuests').value,
+                requirements: document.getElementById('eventRequirements').value
+            };
+            
+            try {
+                const response = await fetch('save_booking.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: currentUser.id,
+                        service: eventDetails.service,
+                        price: eventDetails.price,
+                        event_name: eventDetails.name,
+                        event_email: eventDetails.email,
+                        event_phone: eventDetails.phone,
+                        event_date: eventDetails.date,
+                        guests: eventDetails.guests,
+                        requirements: eventDetails.requirements
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    eventDetails.booking_id = data.booking_id;
+                    cart.push(eventDetails);
+                    updateCartCount();
+                    closeModal('eventModal');
+                    alert('Event added to cart!');
+                    e.target.reset();
+                } else {
+                    alert('Failed to save booking: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please make sure save_booking.php exists.');
+            }
+        }
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        function openCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 2rem;">Your cart is empty</p>';
+            } else {
+                let total = 0;
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    cartItems.innerHTML += `
+                        <div class="cart-item">
+                            <div>
+                                <h4>${item.service}</h4>
+                                <p>${item.name} - ${item.date}</p>
+                                <p>${item.guests} guests</p>
+                            </div>
+                            <div>
+                                <strong>${item.price}</strong>
+                                <button onclick="removeFromCart(${index})" style="margin-left: 1rem; background: #ff6b6b; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">Remove</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('cartTotal').textContent = `Total: ${total}`;
+            }
+            
+            document.getElementById('cartModal').classList.add('active');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            openCart();
+        }
+
+        function proceedToPayment() {
+            if (cart.length === 0) return;
+            
+            closeModal('cartModal');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('paymentTotal').textContent = `Total: ${total}`;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.closest('.payment-method').classList.add('selected');
+            document.getElementById('paymentForm').classList.remove('hidden');
+        }
+
+        async function processPayment(e) {
+            e.preventDefault();
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const bookingIds = cart.map(item => item.booking_id);
+            const paymentInfo = document.getElementById('paymentInfo').value;
+            const selectedMethod = document.querySelector('.payment-method.selected');
+            const paymentMethod = selectedMethod ? selectedMethod.textContent.trim().split('\n')[0] : 'Unknown';
+            
+            try {
+                const response = await fetch('save_payment.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: currentUser.id,
+                        booking_ids: bookingIds,
+                        amount: total,
+                        payment_method: paymentMethod,
+                        payment_info: paymentInfo
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const payment = {
+                        id: data.payment_id,
+                        date: new Date().toLocaleDateString(),
+                        amount: total,
+                        status: 'Completed',
+                        items: [...cart]
+                    };
+                    
+                    payments.push(payment);
+                    cart = [];
+                    updateCartCount();
+                    
+                    closeModal('paymentModal');
+                    alert('Payment Successful! Your event has been booked.');
+                    
+                    e.target.reset();
+                    document.getElementById('paymentForm').classList.add('hidden');
+                    
+                    await loadUserBookings();
+                } else {
+                    alert('Payment failed: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during payment. Please make sure save_payment.php exists.');
+            }
+        }
+
+        async function loadUserBookings() {
+            if (!currentUser) return;
+            
+            try {
+                const response = await fetch(`get_bookings.php?user_id=${currentUser.id}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    payments = data.bookings.filter(b => b.payment.id).map(b => ({
+                        id: b.payment.id,
+                        date: new Date(b.payment.date).toLocaleDateString(),
+                        amount: b.payment.amount,
+                        status: b.payment.status,
+                        items: [{
+                            service: b.service,
+                            name: b.event_name,
+                            date: b.event_date,
+                            guests: b.guests,
+                            price: b.price
+                        }]
+                    }));
+                }
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+        }
+
+        async function showPaymentStatus() {
+            if (!currentUser) {
+                alert('Please login to view payment status!');
+                openLogin();
+                return;
+            }
+            
+            await loadUserBookings();
+            
+            const content = document.getElementById('statusContent');
+            
+            if (payments.length === 0) {
+                content.innerHTML = '<p style="text-align: center; padding: 2rem;">No payment history</p>';
+            } else {
+                content.innerHTML = payments.map(p => `
+                    <div style="background: #f8f9fa; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
+                        <h4>Payment #${p.id}</h4>
+                        <p>Date: ${p.date}</p>
+                        <p>Amount: ${p.amount}</p>
+                        <p>Status: <strong style="color: green;">${p.status}</strong></p>
+                        <p>Events: ${p.items.map(i => i.service).join(', ')}</p>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('statusModal').classList.add('active');
+            document.getElementById('profileMenu').classList.remove('active');
+        }
+
+        async function showReminders() {
+            if (!currentUser) {
+                alert('Please login to view reminders!');
+                openLogin();
+                return;
+            }
+            
+            await loadUserBookings();
+            
+            const content = document.getElementById('reminderContent');
+            const upcomingEvents = payments.flatMap(p => p.items);
+            
+            if (upcomingEvents.length === 0) {
+                content.innerHTML = '<p style="text-align: center; padding: 2rem;">No upcoming events</p>';
+            } else {
+                content.innerHTML = upcomingEvents.map(e => {
+                    const eventDate = new Date(e.date);
+                    const today = new Date();
+                    const daysUntil = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    return `
+                        <div style="background: #f8f9fa; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
+                            <h4>${e.service}</h4>
+                            <p>📅 Date: ${e.date}</p>
+                            <p>👤 Name: ${e.name}</p>
+                            <p>👥 Guests: ${e.guests}</p>
+                            <p style="color: ${daysUntil <= 7 ? '#ff6b6b' : '#667eea'}; font-weight: bold;">
+                                ${daysUntil > 0 ? `${daysUntil} days remaining` : 'Event date passed'}
+                            </p>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            document.getElementById('reminderModal').classList.add('active');
+            document.getElementById('profileMenu').classList.remove('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            const profileIcon = document.querySelector('.profile-icon');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            if (!profileIcon.contains(event.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
