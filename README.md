@@ -62,7 +62,7 @@ Edit config.php with your database credentials if they differ:
 
 $db_host = 'sql210.infinityfree.com';
 $db_user = 'if0_40199430';
-$db_pass = 'chennai93910';
+$db_pass = 'xxxxxxxxxxx';
 $db_name = 'if0_40199430_eventdb';
 
 🚀 How It Works
@@ -122,20 +122,6 @@ HTTPS recommended (InfinityFree provides SSL by default).
 Multi-device login allowed (no session restrictions).
 
 Input sanitized to prevent SQL injection via prepared statements.
-
-💡 Optional Enhancements
-
-Add profile management (update_user.php).
-
-Add event deletion & editing endpoints.
-
-Integrate a real payment gateway (e.g., Razorpay, Stripe).
-
-Use JWT tokens or OAuth for advanced authentication.
-
-📸 Screenshots (if applicable)
-
-(Add screenshots of your UI here when uploading to GitHub or project submission.)
 
 👨‍💻 Authors
 Aitha Venkata Naveen
