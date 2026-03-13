@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Event Planner</title>
     <style>
+        :root {
+            /* Light Theme (White) */
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #ddd;
+            --card-shadow: rgba(0,0,0,0.1);
+            --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+        }
+
+        /* Dark Theme (Black) */
+        html.dark-theme {
+            --primary-color: #6c7ff5;
+            --secondary-color: #a060d0;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --card-shadow: rgba(0,0,0,0.5);
+            --header-bg: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+        }
+
+        /* Red Theme */
+        html.red-theme {
+            --primary-color: #dc3545;
+            --secondary-color: #c82333;
+            --bg-primary: #ffffff;
+            --bg-secondary: #fff5f5;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #ffcccc;
+            --card-shadow: rgba(220, 53, 69, 0.1);
+            --header-bg: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,17 +59,19 @@
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--header-bg);
             color: white;
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px var(--card-shadow);
         }
 
         nav {
@@ -52,7 +99,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #667eea;
+            color: var(--primary-color);
             font-size: 1.5rem;
         }
 
@@ -74,6 +121,42 @@
             opacity: 0.8;
         }
 
+        .theme-switcher {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-right: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem;
+            border-radius: 20px;
+        }
+
+        .theme-btn {
+            background: none;
+            border: 2px solid transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .theme-btn.active {
+            background: white;
+            color: var(--primary-color);
+            border-color: white;
+        }
+
         .cart-icon, .profile-icon {
             position: relative;
             cursor: pointer;
@@ -84,7 +167,7 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background: #ff6b6b;
+            background: var(--accent-color);
             color: white;
             border-radius: 50%;
             width: 20px;
@@ -111,24 +194,64 @@
             font-size: 3.5rem;
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: slideInDown 0.8s ease;
         }
 
         .hero p {
             font-size: 1.3rem;
             margin-bottom: 2rem;
+            animation: slideInUp 0.8s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         section {
             padding: 4rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            background-color: var(--bg-primary);
+            transition: background-color 0.3s ease;
         }
 
         section h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
-            color: #667eea;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        section h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
         }
 
         .services-grid {
@@ -138,16 +261,17 @@
         }
 
         .service-card {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: 0 5px 15px var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
 
         .service-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--card-shadow);
         }
 
         .service-card img {
@@ -158,38 +282,45 @@
 
         .service-card-content {
             padding: 1.5rem;
+            background: var(--bg-primary);
         }
 
         .service-card h3 {
-            color: #667eea;
+            color: var(--primary-color);
             margin-bottom: 0.5rem;
         }
 
         .service-card p {
-            color: #666;
+            color: var(--text-secondary);
             margin-bottom: 1rem;
         }
 
         .service-card .price {
             font-size: 1.3rem;
             font-weight: bold;
-            color: #764ba2;
+            color: var(--secondary-color);
             margin-bottom: 1rem;
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border: none;
             padding: 0.8rem 2rem;
             border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .events-grid {
@@ -199,10 +330,15 @@
         }
 
         .event-card {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px var(--card-shadow);
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: scale(1.02);
         }
 
         .event-card img {
@@ -213,6 +349,12 @@
 
         .event-card-content {
             padding: 1.5rem;
+            background: var(--bg-primary);
+        }
+
+        .event-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
         }
 
         .reviews-container {
@@ -222,10 +364,16 @@
         }
 
         .review-card {
-            background: #f8f9fa;
+            background: var(--bg-secondary);
             padding: 2rem;
             border-radius: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px var(--card-shadow);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+
+        .review-card:hover {
+            transform: translateX(10px);
         }
 
         .stars {
@@ -236,15 +384,20 @@
 
         .reviewer {
             font-weight: bold;
-            color: #667eea;
+            color: var(--primary-color);
             margin-top: 1rem;
         }
 
         footer {
-            background: #2c3e50;
+            background: var(--text-primary);
             color: white;
             text-align: center;
             padding: 2rem;
+        }
+
+        html.dark-theme footer {
+            background: #1a1a1a;
+            border-top: 1px solid var(--border-color);
         }
 
         .modal {
@@ -258,6 +411,16 @@
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .modal.active {
@@ -265,13 +428,26 @@
         }
 
         .modal-content {
-            background: white;
+            background: var(--bg-primary);
             padding: 2rem;
             border-radius: 15px;
             max-width: 500px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-header {
@@ -279,6 +455,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-header h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin: 0;
         }
 
         .close-btn {
@@ -286,16 +470,21 @@
             border: none;
             font-size: 2rem;
             cursor: pointer;
-            color: #999;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
         }
 
         .dropdown-menu {
             position: absolute;
             top: 100%;
             right: 0;
-            background: white;
+            background: var(--bg-primary);
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px var(--card-shadow);
             padding: 1rem;
             margin-top: 0.5rem;
             min-width: 200px;
@@ -307,7 +496,7 @@
         }
 
         .dropdown-menu a {
-            color: #333;
+            color: var(--text-primary);
             display: block;
             padding: 0.5rem 1rem;
             text-decoration: none;
@@ -316,7 +505,8 @@
         }
 
         .dropdown-menu a:hover {
-            background: #f0f0f0;
+            background: var(--bg-secondary);
+            color: var(--primary-color);
         }
 
         .form-group {
@@ -327,15 +517,26 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
+            color: var(--text-primary);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 0.8rem;
-            border: 1px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 1rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .hidden {
@@ -351,7 +552,10 @@
             display: flex;
             justify-content: space-between;
             padding: 1rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
         }
 
         .cart-total {
@@ -359,7 +563,7 @@
             font-weight: bold;
             text-align: right;
             margin-top: 1rem;
-            color: #667eea;
+            color: var(--primary-color);
         }
 
         .payment-methods {
@@ -370,19 +574,79 @@
 
         .payment-method {
             padding: 1rem;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            background: var(--bg-secondary);
         }
 
         .payment-method:hover {
-            border-color: #667eea;
+            border-color: var(--primary-color);
+            transform: translateX(5px);
         }
 
         .payment-method.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            box-shadow: 0 0 15px var(--card-shadow);
+        }
+
+        .contact-box {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .contact-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-box a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-box a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.4rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .theme-switcher {
+                margin-right: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 2rem 1rem;
+            }
+
+            section h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -398,6 +662,13 @@
                 <li><a href="#events">Events</a></li>
                 <li><a href="#reviews">Reviews</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li>
+                    <div class="theme-switcher">
+                        <button class="theme-btn active" onclick="switchTheme('light')" title="Light Theme">☀️</button>
+                        <button class="theme-btn" onclick="switchTheme('dark')" title="Dark Theme">🌙</button>
+                        <button class="theme-btn" onclick="switchTheme('red')" title="Red Theme">❤️</button>
+                    </div>
+                </li>
                 <li class="cart-icon" onclick="openCart()">
                     🛒
                     <span class="cart-count" id="cartCount">0</span>
@@ -410,7 +681,7 @@
                             <a onclick="openRegister()">Register</a>
                         </div>
                         <div id="loggedInMenu" class="hidden">
-                            <div style="padding: 0.5rem 1rem; border-bottom: 1px solid #eee; margin-bottom: 0.5rem;">
+                            <div style="padding: 0.5rem 1rem; border-bottom: 1px solid var(--border-color); margin-bottom: 0.5rem;">
                                 <strong id="userEmail"></strong>
                             </div>
                             <a onclick="showPaymentStatus()">Payment Status</a>
@@ -530,21 +801,21 @@
     <section id="contact">
         <h2>Get In Touch</h2>
         <div style="max-width: 800px; margin: 0 auto;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="contact-box">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Email Us</h3>
-                    <a href="mailto:info@smarteventplanner.com" style="color: #333; text-decoration: none;">info@smarteventplanner.com</a>
+                    <h3>Email Us</h3>
+                    <a href="mailto:info@smarteventplanner.com">info@smarteventplanner.com</a>
                 </div>
-                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                <div class="contact-box">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Call Us</h3>
-                    <a href="tel:+19876543210" style="color: #333; text-decoration: none;">+1 (987) 654-3210</a>
+                    <h3>Call Us</h3>
+                    <a href="tel:+19876543210">+1 (987) 654-3210</a>
                 </div>
-                <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+                <div class="contact-box">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">SMS</h3>
-                    <a href="https://wa.me/11234567890" target="_blank" style="color: #333; text-decoration: none;">+1 (123) 456-7890</a>
+                    <h3>SMS</h3>
+                    <a href="https://wa.me/11234567890" target="_blank">+1 (123) 456-7890</a>
                 </div>
             </div>
         </div>
@@ -552,7 +823,7 @@
 
     <footer>
         <p>&copy; 2025 Smart Event Planner. All Rights Reserved.</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Designed with❤️ for unforgettable events</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Designed with ❤️ for unforgettable events</p>
     </footer>
 
     <!-- Login Modal -->
@@ -573,7 +844,7 @@
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <p style="text-align: center; margin-top: 1rem;">
-                    Don't have an account? <a href="#" onclick="openRegister(); closeModal('loginModal'); return false;" style="color: #667eea;">Register</a>
+                    Don't have an account? <a href="#" onclick="openRegister(); closeModal('loginModal'); return false;" style="color: var(--primary-color);">Register</a>
                 </p>
             </form>
         </div>
@@ -609,7 +880,7 @@
                 </div>
                 <button type="submit" class="btn">Register</button>
                 <p style="text-align: center; margin-top: 1rem;">
-                    Already have an account? <a href="#" onclick="openLogin(); closeModal('registerModal'); return false;" style="color: #667eea;">Login</a>
+                    Already have an account? <a href="#" onclick="openLogin(); closeModal('registerModal'); return false;" style="color: var(--primary-color);">Login</a>
                 </p>
             </form>
         </div>
@@ -674,19 +945,19 @@
             </div>
             <h3>Select Payment Method</h3>
             <div class="payment-methods">
-                <div class="payment-method" onclick="selectPayment('credit')">
+                <div class="payment-method" onclick="selectPayment(this)">
                     <h4>💳 Credit Card</h4>
                     <p>Pay securely with your credit card</p>
                 </div>
-                <div class="payment-method" onclick="selectPayment('debit')">
+                <div class="payment-method" onclick="selectPayment(this)">
                     <h4>💳 Debit Card</h4>
                     <p>Direct payment from your bank account</p>
                 </div>
-                <div class="payment-method" onclick="selectPayment('upi')">
+                <div class="payment-method" onclick="selectPayment(this)">
                     <h4>📱 UPI</h4>
                     <p>Quick payment via UPI apps</p>
                 </div>
-                <div class="payment-method" onclick="selectPayment('netbanking')">
+                <div class="payment-method" onclick="selectPayment(this)">
                     <h4>🏦 Net Banking</h4>
                     <p>Pay through your bank's online portal</p>
                 </div>
@@ -731,6 +1002,36 @@
         let currentUser = null;
         let payments = [];
         let pendingEvent = null;
+
+        // Theme Switching
+        function switchTheme(theme) {
+            const html = document.documentElement;
+            const buttons = document.querySelectorAll('.theme-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (theme === 'light') {
+                html.classList.remove('dark-theme', 'red-theme');
+                buttons[0].classList.add('active');
+                localStorage.setItem('theme', 'light');
+            } else if (theme === 'dark') {
+                html.classList.add('dark-theme');
+                html.classList.remove('red-theme');
+                buttons[1].classList.add('active');
+                localStorage.setItem('theme', 'dark');
+            } else if (theme === 'red') {
+                html.classList.remove('dark-theme');
+                html.classList.add('red-theme');
+                buttons[2].classList.add('active');
+                localStorage.setItem('theme', 'red');
+            }
+        }
+
+        // Load theme on page load
+        window.addEventListener('load', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            switchTheme(savedTheme);
+        });
 
         function openLogin() {
             document.getElementById('loginModal').classList.add('active');
@@ -933,13 +1234,13 @@
                                 <p>${item.guests} guests</p>
                             </div>
                             <div>
-                                <strong>${item.price}</strong>
-                                <button onclick="removeFromCart(${index})" style="margin-left: 1rem; background: #ff6b6b; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">Remove</button>
+                                <strong>$${item.price}</strong>
+                                <button onclick="removeFromCart(${index})" style="margin-left: 1rem; background: var(--accent-color); color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">Remove</button>
                             </div>
                         </div>
                     `;
                 });
-                document.getElementById('cartTotal').textContent = `Total: ${total}`;
+                document.getElementById('cartTotal').textContent = `Total: $${total}`;
             }
             
             document.getElementById('cartModal').classList.add('active');
@@ -956,15 +1257,15 @@
             
             closeModal('cartModal');
             const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('paymentTotal').textContent = `Total: ${total}`;
+            document.getElementById('paymentTotal').textContent = `Total: $${total}`;
             document.getElementById('paymentModal').classList.add('active');
         }
 
-        function selectPayment(method) {
+        function selectPayment(element) {
             document.querySelectorAll('.payment-method').forEach(el => {
                 el.classList.remove('selected');
             });
-            event.target.closest('.payment-method').classList.add('selected');
+            element.classList.add('selected');
             document.getElementById('paymentForm').classList.remove('hidden');
         }
 
@@ -1065,12 +1366,12 @@
                 content.innerHTML = '<p style="text-align: center; padding: 2rem;">No payment history</p>';
             } else {
                 content.innerHTML = payments.map(p => `
-                    <div style="background: #f8f9fa; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
-                        <h4>Payment #${p.id}</h4>
-                        <p>Date: ${p.date}</p>
-                        <p>Amount: ${p.amount}</p>
-                        <p>Status: <strong style="color: green;">${p.status}</strong></p>
-                        <p>Events: ${p.items.map(i => i.service).join(', ')}</p>
+                    <div style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        <h4 style="color: var(--primary-color);">Payment #${p.id}</h4>
+                        <p><strong>Date:</strong> ${p.date}</p>
+                        <p><strong>Amount:</strong> $${p.amount}</p>
+                        <p><strong>Status:</strong> <span style="color: var(--success-color); font-weight: bold;">${p.status}</span></p>
+                        <p><strong>Events:</strong> ${p.items.map(i => i.service).join(', ')}</p>
                     </div>
                 `).join('');
             }
@@ -1100,13 +1401,13 @@
                     const daysUntil = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
                     
                     return `
-                        <div style="background: #f8f9fa; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
-                            <h4>${e.service}</h4>
-                            <p>📅 Date: ${e.date}</p>
-                            <p>👤 Name: ${e.name}</p>
-                            <p>👥 Guests: ${e.guests}</p>
-                            <p style="color: ${daysUntil <= 7 ? '#ff6b6b' : '#667eea'}; font-weight: bold;">
-                                ${daysUntil > 0 ? `${daysUntil} days remaining` : 'Event date passed'}
+                        <div style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                            <h4 style="color: var(--primary-color);">${e.service}</h4>
+                            <p>📅 <strong>Date:</strong> ${e.date}</p>
+                            <p>👤 <strong>Name:</strong> ${e.name}</p>
+                            <p>👥 <strong>Guests:</strong> ${e.guests}</p>
+                            <p style="color: ${daysUntil <= 7 ? 'var(--accent-color)' : 'var(--primary-color)'}; font-weight: bold;">
+                                ${daysUntil > 0 ? `⏰ ${daysUntil} days remaining` : '✅ Event date passed'}
                             </p>
                         </div>
                     `;
